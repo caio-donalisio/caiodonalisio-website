@@ -1,25 +1,37 @@
 version: '3.8'
 
+name: caiodonalisio-website
+
 services:
+
+  nginx:
+    container_name: webserver
+    build: ./nginx
+    ports:
+      - 3334:80
+    depends_on:
+      - web
+
   web:
+    container_name: website
     build: .
     # command: python manage.py runserver
     volumes:
       - ./:/usr/src/
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     env_file:
-      - ./.env.dev
+      - .env
     depends_on:
       - db
+  
   db:
+    container_name: database
     image: postgres:16.4-bullseye
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=hello_django
-      - POSTGRES_PASSWORD=hello_django
-      - POSTGRES_DB=hello_django_dev
+    env_file:
+      - .env
 
 volumes:
   postgres_data:

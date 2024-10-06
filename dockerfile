@@ -27,6 +27,6 @@ COPY . .
 
 EXPOSE 8000
 
-RUN python manage.py migrate
+RUN sh ./entrypoint.sh
 
 CMD ["gunicorn", "--config", "gunicorn_config.py", "website.wsgi:application"]
