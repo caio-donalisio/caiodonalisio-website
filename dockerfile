@@ -23,10 +23,8 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 WORKDIR /usr/src/
 
-COPY . .
-
 EXPOSE 8000
-
+COPY . .
 RUN sh ./entrypoint.sh
 
 CMD ["gunicorn", "--config", "gunicorn_config.py", "website.wsgi:application"]
