@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.http import HttpResponse
+from django.contrib.auth.views import LoginView
 
 from .models import Query, Book
 from . import utils, crawler
@@ -15,9 +16,15 @@ class CollectView(TemplateView):
     content_type = "text/html"
     name = "query"
 
+class MonitorEstanteVirtualLoginView(LoginView):
+    template_name = 'login.html'  # Specify the template for the login page
+    redirect_authenticated_user = True    # Redirect if already logged in
 
+class CrawlView(View):
+    def get(self, request):
+        
+        ...
 def crawl(request):
-
     queries = [
         Query(titulo="japan", preco_max=200),
         #         Query(titulo='japanese', preco_max=200),

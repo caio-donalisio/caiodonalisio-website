@@ -1,0 +1,37 @@
+{% block title %}Login{% endblock %}
+
+
+<form method="post" name="next">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Log In</button>
+</form>
+
+<h3>{{ user.username }}</h3>
+
+{% if form.errors %}
+<div class="error">
+  {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+
+
+{% if user.is_authenticated %}
+    <form action="{% url 'logout' %}" method="post" style="display:inline;" name="next">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+{% endif %}
+
+
+<!-- 
+
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+{% endfor %} -->

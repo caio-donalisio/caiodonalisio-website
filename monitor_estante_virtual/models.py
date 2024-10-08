@@ -1,22 +1,8 @@
 from django.db import models
-from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
-from datetime import datetime
 import hashlib
+from django.contrib.auth.models import User
 
-def default_user_flags():
-    return dict(active=True, type='m')
-
-class User(models.Model):
-    user = models.CharField(max_length=30)
-    email = models.CharField(max_length=100, blank=True, default='')
-    password = models.CharField(max_length=100, blank=True, default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    flags = models.JSONField(default=default_user_flags)
-    
-
-    def __str__(self):
-        return self.user_id
     
 class Query(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

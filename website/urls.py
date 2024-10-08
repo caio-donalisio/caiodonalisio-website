@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("pages.urls")),
     path('', include("blog.urls")),
+    path('', include("accounts.urls")),
+    path('monitor_estante_virtual/', include("monitor_estante_virtual.urls")),
     
 
 ]
