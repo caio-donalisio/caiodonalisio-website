@@ -24,15 +24,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kuib2p4^7ltzviqj=$*9ufi*&#6$1mtpkp@391znoe5tnxx-sj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    'localhost',
+    '[::1]',
+    'localhost:3334',
+    ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3334',
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'blog.apps.BlogConfig',
+    'pages.apps.PagesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,10 +53,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -85,12 +96,12 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('DATABASE', BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get('SQL_USER', 'user'),
-        'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
-        'HOST': os.environ.get('SQL_HOST', 'localhost'),
-        'PORT': os.environ.get('SQL_PORT', '5432'),
+        'ENGINE': os.environ.get('SQL_ENGINE'),# 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('DATABASE'),# BASE_DIR / 'db.sqlite3'),
+        'USER': os.environ.get('SQL_USER'),# 'user'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD'),#, 'password'),
+        'HOST': os.environ.get('SQL_HOST'),#, 'localhost'),
+        'PORT': os.environ.get('SQL_PORT'),#, '5432'),
     }
 }
 
@@ -130,6 +141,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "blog/static",
+    BASE_DIR / "pages/static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

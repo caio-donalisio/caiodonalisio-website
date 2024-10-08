@@ -27,4 +27,4 @@ EXPOSE 8000
 COPY . .
 RUN sh ./entrypoint.sh
 
-CMD ["gunicorn", "--config", "gunicorn_config.py", "website.wsgi:application"]
+CMD ["gunicorn", "--config", "gunicorn_config.py","--reload", "website.wsgi:application"]
