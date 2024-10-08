@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='flags',
-            field=models.JSONField(default=blog.models.default_flags),
+            field=models.JSONField(default=blog.models.default_post_flags),
         ),
     ]

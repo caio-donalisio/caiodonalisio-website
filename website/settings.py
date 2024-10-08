@@ -43,6 +43,7 @@ CSRF_TRUSTED_ORIGINS = [
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'pages.apps.PagesConfig',
+    'monitor_estante_virtual.apps.MonitorEstanteVirtualConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

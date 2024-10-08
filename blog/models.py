@@ -1,13 +1,13 @@
 from django.db import models
 
-def default_flags():
+def default_post_flags():
     return dict(ready=True, display=False, type='m', priority=0)
 
 class Post(models.Model):
     id_name = models.SlugField(max_length=50,unique=True)
-    create_date = models.DateTimeField("date published")
-    update_date = models.DateTimeField("date updated", null=True, auto_now=True)
-    flags = models.JSONField(default=default_flags)
+    created_at = models.DateTimeField("date published", auto_now_add=True)
+    updated_at = models.DateTimeField("date updated", null=True, auto_now=True)
+    flags = models.JSONField(default=default_post_flags)
     display_name = models.CharField("display name", max_length=200)
     description = models.CharField(max_length=1_000, null=True)
     

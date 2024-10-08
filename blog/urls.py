@@ -15,8 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('website/', include('website.urls'))
 """
 from django.urls import path
-from . import views
+from .views import IndexView
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', IndexView.as_view()),
 ]
