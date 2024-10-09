@@ -5,7 +5,7 @@ from .views import SignUpView
 from .forms import LoginForm
 
 urlpatterns = [
-    path('login/',  LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/',  LoginView.as_view(template_name='login.html', authentication_form=LoginForm), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     # path('signup/', SignUpView.as_view(), name='signup'),
 ]
