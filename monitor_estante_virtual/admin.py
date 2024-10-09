@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Query, Collection, Book
+
+admin.site.register(Query)
+admin.site.register(Collection)
+admin.site.register(Book)

@@ -1,17 +1,39 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Trigger Function</title>
-</head>
-<body>
-    <h1>Trigger Function Example</h1>
-    
-    <form action="{% url 'crawl' %}" method="POST">
-        {% csrf_token %}  <!-- CSRF token for security -->
-        <button type="submit">Crawl!</button>
+  </head>
+  <body>
+    <h3>Username: {{ user.get_username }}</h3>
+
+    <ul>
+      {% for query in queries %}
+        <br />
+        <li>{{ query.titulo }}</li>
+
+        {% for collection in query.collection_set.all %}
+          <li>{{ collection }}</li>
+
+          {% for book in collection.book_set.all %}
+            <li>{{ book }}</li>
+          {% empty %}
+            <li>No Book found.</li>
+          {% endfor %}
+        {% empty %}
+          <li>No Collections found.</li>
+        {% endfor %}
+
+        {% empty %}
+        <li>No queries found.</li>
+      {% endfor %}
+    </ul>
+
+    <form action="{% url 'crawl' user.username|slugify %}" method="POST">
+      {% csrf_token %}
+      <button type="submit">Crawl!</button>
     </form>
-</body>
+  </body>
 </html>

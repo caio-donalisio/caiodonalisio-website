@@ -16,16 +16,16 @@ class Query(models.Model):
     vendedor = models.CharField(max_length=100, blank=True, default='')
     idioma = models.CharField(max_length=100, blank=True, default='')
     preco_min = models.DecimalField(max_digits=10, decimal_places=2, validators=[
-        MinValueValidator(0), MaxValueValidator(999_999)])
+        MinValueValidator(0), MaxValueValidator(999_999)], blank=True, null=True)
     preco_max = models.DecimalField(max_digits=10, decimal_places=2, validators=[
-        MinValueValidator(0), MaxValueValidator(999_999)])
+        MinValueValidator(0), MaxValueValidator(999_999)], blank=True, null=True)
     ano_de_publicacao = models.CharField(max_length=4, blank=True, default='')
     tipo_de_livro = models.CharField(max_length=100, choices=[
-        ('',''),('novo','novo'),('usado','usado'),('ambos','ambos')], default='')
+        ('',''),('novo','novo'),('usado','usado'),('ambos','ambos')], blank=True, default='')
     isbn = models.CharField(max_length=20, blank=True, default='')
     
     def __str__(self):
-        return f"Busca: ({', '.join(k + ': ' + v for k,v in self.__dict__.items() if v and isinstance(v,str))})"
+        return f"({', '.join(k + ': ' + v for k,v in self.__dict__.items() if v and isinstance(v,str))})"
 
 
 class Collection(models.Model):

@@ -23,7 +23,7 @@ urlpatterns = [
     path('', include("pages.urls")),
     path('', include("blog.urls")),
     path('', include("accounts.urls")),
-    path('monitor_estante_virtual/', include("monitor_estante_virtual.urls")),
+    path('monitor_estante_virtual/app/', include("monitor_estante_virtual.urls")),
     
 
 ]

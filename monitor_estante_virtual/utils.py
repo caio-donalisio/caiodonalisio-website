@@ -1,26 +1,8 @@
 import re
 
-from typing import Dict
-import bs4
-from functools import singledispatch
-
 def extract_number(text: str) -> int:
     count = re.sub(r'[^\d]+', '', text)
     return int(count) if count else 0
-
-# def get_request_params(query: models.Busca, page=1) -> Dict:
-#     return {
-#         **estantevirtual_dicts.transform_query_keys(query),
-#         # **{estantevirtual_dicts.termos[termo]: query[termo] for termo in query},
-#         "page": page,
-#         "sort": "new-releases",
-#         "nsCat": "Natural"
-    # }
-
-# def get_price_key(query: models.Busca) -> dict:
-#     query['_preco'] = f"{query.get('preco_min', 1) * 100}-{query.get('preco_max', 99_999) * 100}"
-#     query.pop('preco_max', None), query.pop('preco_min', None)
-#     return query
 
 def default_headers():
     return {

@@ -1,31 +1,52 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, View
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.views.generic import TemplateView, View, ListView, RedirectView
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.views import LoginView
+from django.template.defaultfilters import slugify
 
-from .models import Query, Book
+
+
+from .models import Query, Book, Collection
 from . import utils, crawler
 import httpx
 import logging
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 logger = logging.getLogger(__name__)
 
+class RedirectCollectView(LoginRequiredMixin, RedirectView):
+    permanent = True
+    
+    def get(self, request):
+        if request.user.is_authenticated:
+            username = request.user.username
+            return HttpResponseRedirect(slugify(username))
+        else:
+            return redirect(f'/login/?next=/{slugify(username)}/')
+    
 
-class CollectView(TemplateView):
+class CollectView(LoginRequiredMixin, ListView):
     template_name = "query.html"
     content_type = "text/html"
-    name = "query"
+    model = Query
+    context_object_name = 'queries' 
+    ordering = ['id']
+    
+    def get(self, request, username):
+        if slugify(request.user.username) != username:
+            return redirect('main_monitor_page', username=slugify(request.user.username))
+        return render(request, 'query.html')
+    
+    def get_queryset(self):
+        return Query.objects.filter(user=self.request.user)
 
-class MonitorEstanteVirtualLoginView(LoginView):
-    template_name = 'login.html'  # Specify the template for the login page
-    redirect_authenticated_user = True    # Redirect if already logged in
-
-class CrawlView(View):
-    def get(self, request):
-        
-        ...
-def crawl(request):
-    queries = [
+class CrawlView(LoginRequiredMixin, View):
+    
+    def post(self, request, **kwargs):
+        queries = [
         Query(titulo="japan", preco_max=200),
         #         Query(titulo='japanese', preco_max=200),
         #         Query(titulo='japao', preco_max=200),
@@ -54,18 +75,18 @@ def crawl(request):
         #         Query(idioma='japones'),
     ]
 
-    for query in queries:
-        logger.info("")
-        print(f"Fetching {str(query.__repr__())}")
-        # yield str('<h3>\n\n' + 'Fetching...' + str(query) + '\n' + '-' * 50 + '</h3>')
-        for item in crawler.Fetcher(
-            session=httpx.Client(
-                headers=utils.default_headers(),
-                base_url="https://www.estantevirtual.com.br",
-            ),
-            query=query,
-        ).run():
-            (item)
-            # yield str(item) + '<br>'
+        for query in queries:
+            logger.info("")
+            print(f"Fetching {str(query.__repr__())}")
+            for item in crawler.Fetcher(
+                session=httpx.Client(
+                    headers=utils.default_headers(),
+                    base_url="https://www.estantevirtual.com.br",
+                ),
+                query=query,
+            ).run():
+                print(item)
+                break
+                # yield str(item) + '<br>'
 
-    return HttpResponse(str(query.__repr__()))
+        return redirect('main_monitor_page', username=slugify(request.user.username))

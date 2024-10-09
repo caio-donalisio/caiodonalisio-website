@@ -4,7 +4,7 @@ from . import models
 from typing import List, Dict, Generator
 from functools import cached_property
 
-class DataParser:
+class data_parser:
     def __init__(self, raw_data: str):
         self.raw_data = raw_data
 
